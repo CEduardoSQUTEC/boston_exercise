@@ -1,0 +1,25 @@
+services:
+  boston-db:
+    image: postgres:latest
+    container_name: boston-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: boston
+    volumes:
+      - boston-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  boston-app:
+    image: app:v1.0
+    container_name: boston-app
+    environment:
+      DB_HOST: boston-db
+    depends_on:
+      - boston-db
+    ports:
+      - "8080:8080"
+
+volumes:
+  boston-data:
